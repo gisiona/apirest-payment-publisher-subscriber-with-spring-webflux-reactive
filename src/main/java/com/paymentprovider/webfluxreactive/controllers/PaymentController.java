@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("payments")
+@RequestMapping("/api/v1/payments")
 @Slf4j
 @RequiredArgsConstructor
 public class PaymentController {
@@ -27,7 +27,7 @@ public class PaymentController {
     private final PaymentRepository paymentRepository;
     private final PaymentPublisher paymentPublisher;
 
-    @PostMapping("create-payment")
+    @PostMapping("/create-payment")
     public Mono<Payment> createPayment(@RequestBody final PaymentRequestDto paymentRequestDto) {
         final String userId = paymentRequestDto.getUserId();
 
@@ -63,9 +63,8 @@ public class PaymentController {
                 .subscribeOn(Schedulers.parallel());
     }
 
-    @GetMapping("ids")
+    @GetMapping()
     public Mono<String> findUserAll() {
-
         return Mono.fromCallable(() -> {
             return String.join(",", InMemoryDatabaseProvider.DATABASE.keySet());
         }).subscribeOn(Schedulers.parallel());
